@@ -1,0 +1,13 @@
+.c-color-box {
+  position: relative;
+  width: 50%;
+  aspect-ratio: 720 / 380;
+  background-color: $color-primary;
+  &__inner {
+    @include boxPadding;
+    height: 100%;
+    & > * {
+      @include typographyHeadline;
+    }
+  }
+}

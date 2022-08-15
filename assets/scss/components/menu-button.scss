@@ -20,6 +20,15 @@ $hamburger-hover-filter       : opacity(50%) !default;
 $hamburger-active-hover-filter: $hamburger-hover-filter !default;
 
 .hamburger {
+  z-index: 1;
+  position: relative;
+  top: 0;
+  right: 0;
+
+  @include breakpoint(medium) {
+    display: none;
+  }
+
   padding: $hamburger-padding-y $hamburger-padding-x;
   display: inline-block;
   cursor: pointer;

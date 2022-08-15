@@ -1,5 +1,12 @@
 .c-header {
-  // color: red;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  @include breakpoint(medium) {
+    position: relative;
+    background: unset;
+  }
   &__inner {
     padding: 1.3125rem 1.1875rem 0 1.1875rem;
     @include breakpoint(medium) {
@@ -9,6 +16,9 @@
   &__menu-container {
     display: flex;
     align-items: baseline;
-    justify-content: space-between;
+    justify-content: flex-end;
+    @include breakpoint(medium) {
+      justify-content: space-between;
+    }
   }
 }

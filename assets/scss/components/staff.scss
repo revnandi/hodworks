@@ -1,0 +1,29 @@
+.c-staff {
+  &__list {
+    @include resetList;
+    padding: 0 2.8125rem 2.8125rem 2.1875rem
+  }
+  &__list-item {
+    padding-top: 1em;
+    & + * {
+      border-top: 1px solid $color-dark;
+    }
+  }
+  &__list-item-name {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.375em;
+    text-transform: uppercase;
+  }
+  &__list-item-header {
+    margin-bottom: 1em;
+  }
+  &__list-item-description {
+    margin-bottom: 1em;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.375em;
+  }
+}

@@ -1,4 +1,8 @@
 .c-language-selector {
+  z-index: 1;
+  position: relative;
+  top: 0;
+  right: 1.125rem;
   display: inline-block;
   align-self: baseline;
   padding: 0;
@@ -7,14 +11,15 @@
   background: none;
   font-style: normal;
   font-weight: 400;
-  font-size: 1.1875rem;
-  line-height: 1.157em;
+  font-size: .8125rem;
+  line-height: 1.153em;
   letter-spacing: 0.005em;
   cursor: pointer;
-  @include breakpoint(small) {
-    position: fixed;
-    top: 1rem;
-    right: 1.125rem;
-    z-index: 1;
+  @include breakpoint(medium) {
+    top: unset;
+    right: unset;
+    font-size: 1.1875rem;
+    line-height: 1.157em;
   }
 }
+

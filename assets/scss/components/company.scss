@@ -1,0 +1,57 @@
+.c-company {
+  &__list-container {
+    background-color: $color-primary;
+  }
+  &__list {
+    @include resetList;
+    @include boxPadding;
+  }
+  &__year {
+    cursor: pointer;
+    display: inline-block;
+    font-style: normal;
+    font-weight: 400;
+    font-size: .8125rem;
+    line-height: 1.153em;
+    @include breakpoint(medium) {
+      font-size: 2.1875rem;
+      line-height: 1.142em;
+    }
+    &--active {
+      font-weight: 700;
+    }
+  }
+  &__year-description {
+    margin: 1em 0;
+    display: none;
+    font-style: normal;
+    font-weight: 700;
+    font-size: .625rem;
+    line-height: 138.49%;
+    & > p {
+      font-style: normal;
+      font-weight: 700;
+      font-size: .625rem;
+      line-height: 138.49%; 
+    }
+    &--open {
+      display: block;
+    }
+    @include breakpoint(medium) {
+      font-weight: 400;
+      font-size: 2.1875rem;
+      line-height: 1.142em;
+      & > p {
+        font-weight: 400;
+        font-size: 2.1875rem;
+        line-height: 1.142em;
+      }
+    }
+  }
+  &__text-container {
+    padding: 0 2.8125rem 2.8125rem 1.875rem;
+  }
+  &__years-container {
+    background-color: $color-primary;
+  }
+}

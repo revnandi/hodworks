@@ -23,3 +23,50 @@
 		@warn 'Breakpoint mixin supports: small, medium, medium_large, large, wide';
 	}
 }
+
+@mixin boxPadding {
+	padding: 1.5625rem 1.25rem;
+	@include breakpoint(medium) {
+		padding: 2.8125rem 2.9375rem;
+	}
+}
+
+@mixin resetLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+@mixin resetList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+@mixin typographyHeadline {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.125rem;
+	line-height: 1.166em;
+	letter-spacing: 0.005em;
+	text-transform: uppercase;
+	@include breakpoint(medium) {
+		font-size: 2.25rem;
+		line-height: 1.145em;
+	}
+	@include breakpoint(large) {
+		font-size: 3.4375rem;
+		line-height: 1.145em;
+	}
+}
+
+@mixin typographyHeadlineMedium {
+	font-style: normal;
+	font-weight: 400;
+	font-size: .5625rem;
+	line-height: 1.111em;
+	letter-spacing: 0.005em;
+	@include breakpoint(medium) {
+		font-size: 1.6875rem;
+		line-height: 1.148em;
+	}
+}

@@ -1,0 +1,19 @@
+.c-content {
+  padding: 0 1.25rem 1.875rem 1.25rem;
+  @include breakpoint(medium) {
+    padding: 0 2.8125rem 2.8125rem 1.875rem;
+  }
+  & hr {
+    margin: 1rem 0;
+    border: none;
+    border: 1px solid $color-dark;
+  }
+  p {
+    font-style: normal;
+    font-size: .625rem;
+    line-height: 138.49%;
+    @include breakpoint(medium) {
+      font-size: 1rem;
+    }
+  }
+}

@@ -10,7 +10,7 @@
     <?php wp_head() ?>
 </head>
 <body <?php body_class('flex flex-col h-screen') ?>>
-<?php wp_body_open(); ?>
+<?php wp_body_open();  ?>
 
     <header class="c-header">
         <div class="c-header__inner">
@@ -27,5 +27,5 @@
         </div>
     </header>
 
-    <main class="flex-grow px-4 py-4">
+    <main class="c-page">
 
