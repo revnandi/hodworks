@@ -140,3 +140,26 @@ add_action( 'template_redirect', function() {
 // 	}
 // }
 // add_action( 'parse_query', 'wpa_parse_query' );
+
+// Find closest date to date from array
+function find_closest($array, $date)
+{
+	$items = [];
+    foreach($array as $index => $item)
+    {
+		array_push($items, [
+			'distance' => abs(intval($date) - intval($item['date'])),
+			'id' => $item['id']
+		]);
+    }
+
+	uasort($items,function($a,$b){
+		return strcmp($a['distance'], $b['distance']);
+	});
+
+	foreach ($array as $item)
+	{
+	  if ($item['id'] == reset($items)['id'])
+		return $item;
+	}
+};

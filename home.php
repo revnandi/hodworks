@@ -16,7 +16,7 @@
 
 					<?php if ($page_image[0]) :?>
 						<img
-						class="c-news__image lazyload"
+						class="c-news__image lazyload blur-up"
 						src="<?php echo $page_image_lqip[0] ?>"
 						data-src="<?php echo $page_image[0] ?>"
 						alt="<?php echo $post->post_title ?>"
@@ -47,7 +47,7 @@
 
 									<?php if ($post_image[0]) :?>
 										<img
-										class="c-news__image lazyload"
+										class="c-news__image lazyload blur-up"
 										src="<?php echo $post_image_lqip[0] ?>"
 										data-src="<?php echo $post_image[0] ?>"
 										alt="<?php echo $post->post_title ?>"

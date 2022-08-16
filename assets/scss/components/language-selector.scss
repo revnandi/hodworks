@@ -1,25 +1,53 @@
 .c-language-selector {
+  @include resetList;
   z-index: 1;
   position: relative;
   top: 0;
   right: 1.125rem;
-  display: inline-block;
+  display: flex;
   align-self: baseline;
   padding: 0;
   margin: 0;
   border: 0;
   background: none;
-  font-style: normal;
-  font-weight: 400;
-  font-size: .8125rem;
-  line-height: 1.153em;
-  letter-spacing: 0.005em;
   cursor: pointer;
   @include breakpoint(medium) {
     top: unset;
     right: unset;
-    font-size: 1.1875rem;
-    line-height: 1.157em;
+  }
+  & li {
+    position: relative;
+    & + * {
+      margin-left: 0.75em;
+      &::after {
+        content: '/';
+        position: absolute;
+        left: -0.5em;
+        font-style: normal;
+        font-weight: 400;
+        font-size: .8125rem;
+        line-height: 1.153em;
+        letter-spacing: 0.005em;
+        text-transform: uppercase;
+        @include breakpoint(medium) {
+          font-size: 1.1875rem;
+          line-height: 1.157em;
+        }
+      }
+    }
+    a {
+      @include resetLink;
+      font-style: normal;
+      font-weight: 400;
+      font-size: .8125rem;
+      line-height: 1.153em;
+      letter-spacing: 0.005em;
+      text-transform: uppercase;
+      @include breakpoint(medium) {
+        font-size: 1.1875rem;
+        line-height: 1.157em;
+      }
+    }
   }
 }
 

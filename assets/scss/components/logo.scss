@@ -1,5 +1,9 @@
 .c-logo {
   width: 100%;
+  overflow: hidden;
+  max-height: 300px;
+  will-change: max-height;
+  transition: all 0.3s $ease;
   &__media {
     width: 100%;
     height: auto;

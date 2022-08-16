@@ -49,7 +49,7 @@
 
 					<?php if ($post_image[0]) :?>
 						<img
-						class="c-cocreators__image lazyload"
+						class="c-cocreators__image lazyload blur-up"
 						src="<?php echo $post_image_lqip[0] ?>"
 						data-src="<?php echo $post_image[0] ?>"
 						alt="<?php echo $post->post_title ?>"

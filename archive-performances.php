@@ -3,8 +3,6 @@
 <?php
   // Create month name list by locale
 
-	pretty_dump(pll_current_language('locale'));
-
   	$locale = pll_current_language('locale');
 
 	$month_lists = [
@@ -40,32 +38,24 @@
 
 	$months_locale = $month_lists[$locale];
 
-	pretty_dump($months_locale);
-
-
 ?>
 
 <?php if ( have_posts() ) :
-
-	pretty_dump($posts);
 
   $formatted_performances = [];
 
     foreach ($posts as $performance) :
 
-      
-
-		// pretty_dump(get_fields($performance->ID));
-		// pretty_dump(get_field('piece', $performance)->ID);
-		// pretty_dump(get_field('location', $performance));
-
 		$formatted_performance = [
+			'id' => $performance->ID,
+            'performance_id' => get_field('piece', $performance)->ID,
 			'title' => get_field('piece', $performance)->post_title,
 			'location' => get_field('location', $performance),
 			'event_url' => get_field('event_url', $performance),
 			'ticket_url' => get_field('ticket_url', $performance),
-      'date' => get_field('date', $performance),
-			'year' => date('Y', (get_field('date', $performance)))
+      		'date' => get_field('date', $performance),
+			'year' => date('Y', (get_field('date', $performance))),
+			'full_date_string' => date('Y.m.d.', (get_field('date', $performance)))
 		];
 
 		array_push($formatted_performances, $formatted_performance);
@@ -79,10 +69,18 @@
 
     $year_groups = groupBy($formatted_performances, 'year');
 
-    // pretty_dump($year_groups);
-
     wp_reset_postdata();
+    
+    $future_performances = array_filter($formatted_performances, function($val){
+        return ($val['date'] >= date('U'));
+    });
 
+    $latest_performance = find_closest($future_performances, date('U'));
+
+    $latest_performance_image_lqip = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance['id'])), 'lqip');
+	$latest_performance_image = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance['id'])),  'medium_large');
+	$latest_performance_piece_image_lqip = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance['performance_id'])), 'lqip');
+	$latest_performance_piece_image = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance['performance_id'])),  'medium_large');
   ?>
 
 <?php endif; ?>
@@ -93,6 +91,29 @@
 			<div class="c-color-box__inner">
 				<h1>Naptár</h1>
 			</div>
+		</div>
+		<div class="c-calendar__image-container">
+
+			<?php if ($latest_performance_image[0]) :?>
+				<img
+                    class="c-calendar__image lazyload blur-up"
+                    src="<?php echo $latest_performance_image_lqip[0] ?>"
+                    data-src="<?php echo $latest_performance_image[0] ?>"
+                    alt="<?php echo $latest_performance->post_title ?>"
+				/>
+			<?php elseif ($latest_performance_piece_image[0]) : ?>
+                <img
+                    class="c-calendar__image lazyload blur-up"
+                    src="<?php echo $latest_performance_piece_image_lqip[0] ?>"
+                    data-src="<?php echo $latest_performance_piece_image[0] ?>"
+                    alt="<?php echo $latest_performance->post_title ?>"
+				/>
+            <?php endif; ?>
+			<div class="c-calendar__image-date-title">
+                <span><?php echo date('m', $latest_performance['date'])?>/<?php echo date('d', $latest_performance['date'])?></span>
+                <span><?php echo $latest_performance['title']; ?></span>
+            </div>
+            <div class="c-calendar__image-location"><?php echo $latest_performance['location']; ?></div>
 		</div>
 	</div>
 	<div class="c-calendar__inner">
@@ -128,8 +149,6 @@
 			<?php if ($year_groups) : $counter = 1 ?>
 				<div id="hw_calendar_tables" class="c-calendar__tables">
 
-
-
 					<?php foreach ($year_groups as $key => $table) : ?>
 
 						<div
@@ -141,7 +160,7 @@
 							<?php foreach ($table as $row) :?>
 
 								<div class="c-calendar__row">
-									<div class="c-calendar__cell c-calendar__cell--uppercase"><?php echo $months_locale[date('n', $row['date'])] ?></div>
+									<div class="c-calendar__cell c-calendar__cell--uppercase"><?php echo $months_locale[date('n', $row['date'])] ?> <?php echo date('j', $row['date']) ?>.</div>
 									<div class="c-calendar__cell c-calendar__cell--uppercase"><?php echo $row['title'] ?></div>
 									<div class="c-calendar__cell"><?php echo $row['location'] ?></div>
 
