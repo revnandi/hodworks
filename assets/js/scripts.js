@@ -2,6 +2,7 @@ import lazySizes from 'lazysizes';
 import 'lazysizes/plugins/blur-up/ls.blur-up';
 import Plyr from 'plyr';
 import Splide from '@splidejs/splide';
+import * as paper from 'paper-jsdom';
 document.addEventListener("DOMContentLoaded", function(){
   // Handler when the DOM is fully loaded
 
@@ -42,6 +43,9 @@ document.addEventListener("DOMContentLoaded", function(){
         singlePieceVideoButton: document.getElementById('hw_single_piece_video_button'),
         singlePieceGalleryButton: document.getElementById('hw_single_piece_gallery_button'),
         singlePieceInfoButton: document.getElementById('hw_single_piece_background_info_button'),
+        splashScreenContainer: document.getElementById('hw_splash_screen'),
+        splashScreenVideo: document.getElementById('hw_splash_screen_video'),
+        splashScreenCanvas: document.getElementById('hw_splash_screen_canvas'),
       };
       this.sizes = {};
       this.canvasPoints = {
@@ -199,9 +203,36 @@ document.addEventListener("DOMContentLoaded", function(){
       window.addEventListener('resize', this.initCanvas);
 
       if(this.elements.singlePieceSubContents.length > 0) {
-        if(this.elements) {
-          this.elements.
-        }
+
+        const resetSubContents = () => {
+          this.elements.singlePieceSubContents.forEach(item => {
+            item.classList.remove('c-piece__sub-content--active');
+          });
+        };
+
+        if(this.elements.singlePieceGalleriesContainer && this.elements.singlePieceGalleryButton) {
+          this.elements.singlePieceGalleryButton.addEventListener('click', (e) => {
+            console.log(e);
+            resetSubContents();
+            this.elements.singlePieceGalleriesContainer.classList.add('c-piece__sub-content--active');
+          });
+        };
+  
+        if(this.elements.singlePieceVideosContainer && this.elements.singlePieceVideoButton) {
+          this.elements.singlePieceVideoButton.addEventListener('click', (e) => {
+            console.log(e);
+            resetSubContents();
+            this.elements.singlePieceVideosContainer.classList.add('c-piece__sub-content--active');
+          });
+        };
+
+        if(this.elements.singlePieceInfoContainer && this.elements.singlePieceInfoButton) {
+          this.elements.singlePieceInfoButton.addEventListener('click', (e) => {
+            console.log(e);
+            resetSubContents();
+            this.elements.singlePieceInfoContainer.classList.add('c-piece__sub-content--active');
+          });
+        };
       };
     };
 
@@ -231,6 +262,83 @@ document.addEventListener("DOMContentLoaded", function(){
           this.widgets[`singlePieceVimeoPlayer${item.dataset.code}`] =  new Plyr(item);
         });
       };
+
+      if(this.elements.splashScreenVideo) {
+        this.widgets.splashScreenVideoPlayer = new Plyr(this.elements.splashScreenVideo, {
+          // debug: true,
+          volume: 0,
+          autoplay: true,
+          muted: true,
+          controls: false
+        });
+      };
+
+      if(this.elements.splashScreenCanvas) {
+        paper.setup(this.elements.splashScreenCanvas);
+        console.log(paper);
+
+
+
+        const horizontalSawPath = new paper.Path({
+          segments: [
+            [0, paper.view.viewSize.height / 2],
+            [paper.view.viewSize.width / 4, paper.view.viewSize.height / 2],
+            [(paper.view.viewSize.width / 4) * 2, paper.view.viewSize.height / 2],
+            [(paper.view.viewSize.width / 4) * 3, paper.view.viewSize.height / 2],
+            [paper.view.viewSize.width, paper.view.viewSize.height / 2]
+          ],
+          strokeColor: '#ffffff',
+          strokeWidth: 10
+        });
+
+        const verticalLeftPath = new paper.Path({
+          segments: [
+            [5, paper.view.viewSize.height],
+            [5, paper.view.viewSize.height]
+          ],
+          strokeColor: '#ffffff',
+          strokeWidth: 10
+        });
+
+        const verticalRightPath = new paper.Path({
+          segments: [
+            [paper.view.viewSize.width - 5, 0],
+            [paper.view.viewSize.width - 5, 0]
+          ],
+          strokeColor: '#ffffff',
+          strokeWidth: 10
+        });
+
+        console.log(horizontalSawPath);
+
+        horizontalSawPath.tween({
+          'segments[0].point.y': paper.view.viewSize.height / 3,
+          'segments[1].point.y': (paper.view.viewSize.height / 3) * 2,
+          'segments[2].point.y': paper.view.viewSize.height / 3,
+          'segments[3].point.y': (paper.view.viewSize.height / 3) * 2,
+          'segments[4].point.y': paper.view.viewSize.height / 3,
+          }, {
+              easing: 'easeInOutCubic',
+              duration: 2000
+          }
+        );
+
+        verticalLeftPath.tween({
+          'segments[0].point.y': 0,
+          }, {
+              easing: 'easeInOutCubic',
+              duration: 2000
+          }
+        );
+
+        verticalRightPath.tween({
+          'segments[1].point.y': paper.view.viewSize.height,
+          }, {
+              easing: 'easeInOutCubic',
+              duration: 2000
+          }
+        );
+      }
     };
 
     // initCanvas() {

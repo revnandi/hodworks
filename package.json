@@ -16,6 +16,8 @@
   "dependencies": {
     "@splidejs/splide": "^4.0.7",
     "lazysizes": "^5.3.2",
+    "paper": "^0.12.15",
+    "paper-jsdom": "^0.12.15",
     "plyr": "^3.7.2"
   }
 }
