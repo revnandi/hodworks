@@ -3,7 +3,7 @@
 <?php
   // Create month name list by locale
 
-  	$locale = pll_current_language('locale');
+  $locale = pll_current_language('locale');
 
 	$month_lists = [
 		'en_GB' => [

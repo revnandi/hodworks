@@ -5,6 +5,8 @@
   background-color: $color-primary;
   &__inner {
     @include boxPadding;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     & > * {
       @include typographyHeadline;

@@ -1,0 +1,101 @@
+.c-hod {
+  &__image-container {
+    position: relative;
+    object-fit: cover;
+  }
+  &__image {
+    width: 100%;
+    height: 100%;
+  }
+  &__columns {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__column {
+    width: 100%;
+    @include breakpoint(medium) {
+      width: 50%;
+    }
+    &--green {
+      background-color: $color-primary;
+    }
+  }
+  &__content {
+    display: none;
+    padding: 1.875rem 1.0625rem 1.875rem 1.375rem;
+    @include breakpoint(medium) {
+      padding: 3.75rem 2.8125rem 2.8125rem 1.9375rem;
+    }
+    &--active {
+      display: block;
+    }
+  }
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: auto;
+  }
+  &__button{
+    border: none;
+    background-color: transparent;
+    font-style: normal;
+    font-weight: 400;
+    font-size: .625rem;
+    line-height: 1.1em;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    cursor: pointer;
+    @include breakpoint(medium) {
+      font-size: 1.1875rem;
+      line-height: 1.157em;
+    }
+    &--active {
+      font-weight: 700;
+    }
+  }
+  &__works-container {
+    & + * {
+      margin-top: 1rem;
+    }
+    @include breakpoint(medium) {
+      & + * {
+        margin-top: 3rem;
+      } 
+    }
+  }
+  &__works-type {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 138.49%;
+    text-transform: uppercase;
+    @include breakpoint(medium) {
+      font-size: 3.4375rem;
+      line-height: 127.5%;
+    }
+  }
+  &__works-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  &__works-link {
+    @include resetLink;
+    font-style: normal;
+    font-weight: 400;
+    font-size: .625rem;
+    line-height: 138.49%;
+    text-transform: uppercase;
+    @include breakpoint(medium) {
+      font-size: 1.6875rem;
+      line-height: 1.148em;
+      letter-spacing: 0.005em;
+      & span {
+        font-size: 1rem;
+        line-height: 1.125rem;
+        letter-spacing: 0.005em;
+      }
+    }
+  }
+}

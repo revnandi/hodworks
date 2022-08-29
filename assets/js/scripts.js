@@ -46,6 +46,11 @@ document.addEventListener("DOMContentLoaded", function(){
         splashScreenContainer: document.getElementById('hw_splash_screen'),
         splashScreenVideo: document.getElementById('hw_splash_screen_video'),
         splashScreenCanvas: document.getElementById('hw_splash_screen_canvas'),
+        hodPageCvButton: document.getElementById('hw_hod_cv_button'),
+        hodPageWorksButton: document.getElementById('hw_hod_works_button'),
+        hodPageContent: document.getElementById('hw_hod_content'),
+        hodPageCv: document.getElementById('hw_hod_cv'),
+        hodPageWorks: document.getElementById('hw_hod_works'),
       };
       this.sizes = {};
       this.canvasPoints = {
@@ -62,7 +67,11 @@ document.addEventListener("DOMContentLoaded", function(){
           y: 200
         }
       };
-      this.widgets = {};
+      this.widgets = {
+        hodPageState: {
+          activeScreen: 'base'
+        }
+      };
 
       this.bindEvents();
       this.setSizes();
@@ -111,9 +120,10 @@ document.addEventListener("DOMContentLoaded", function(){
         scrollFunction()
       };
 
-      if(this.elements.menuButton) {
+      if(this.elements.menuButton && this.elements.menu) {
         this.elements.menuButton.addEventListener('click', (e) => {
           e.currentTarget.classList.toggle('is-active');
+          this.elements.menu.classList.toggle('c-main-navigation--open');
         });
       };
 
@@ -192,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function(){
         });
       };
 
-      if(this.elements.calendarYearsList) {
+      if(this.elements.canvas) {
         this.elements.canvas.addEventListener('mousemove', function(event) {
           handleMouseMove(this.canvasPoints.a, event);
           handleMouseMove(this.canvasPoints.b, event);
@@ -234,6 +244,38 @@ document.addEventListener("DOMContentLoaded", function(){
           });
         };
       };
+
+      if(this.elements.hodPageCvButton && this.elements.hodPageCv && this.elements.hodPageContent && this.elements.hodPageWorks) {
+        this.elements.hodPageCvButton.addEventListener('click', (e) => {
+          if(this.widgets.hodPageState.activeScreen == 'cv') {
+            e.currentTarget.classList.remove('c-hod__button--active');
+            this.elements.hodPageContent.classList.add('c-hod__content--active');
+            this.elements.hodPageCv.classList.remove('c-hod__content--active');
+          } else {
+            e.currentTarget.classList.add('c-hod__button--active');
+            this.elements.hodPageWorksButton.classList.remove('c-hod__button--active');
+            this.widgets.hodPageState.activeScreen = 'cv';
+            this.elements.hodPageContent.classList.remove('c-hod__content--active');
+            this.elements.hodPageWorks.classList.remove('c-hod__content--active');
+            this.elements.hodPageCv.classList.add('c-hod__content--active');
+          };
+        });
+
+        this.elements.hodPageWorksButton.addEventListener('click', (e) => {
+          if(this.widgets.hodPageState.activeScreen == 'works') {
+            e.currentTarget.classList.remove('c-hod__button--active');
+            this.elements.hodPageContent.classList.add('c-hod__content--active');
+            this.elements.hodPageWorks.classList.remove('c-hod__content--active');
+          } else {
+            e.currentTarget.classList.add('c-hod__button--active');
+            this.elements.hodPageCvButton.classList.remove('c-hod__button--active');
+            this.widgets.hodPageState.activeScreen = 'works';
+            this.elements.hodPageContent.classList.remove('c-hod__content--active');
+            this.elements.hodPageCv.classList.remove('c-hod__content--active');
+            this.elements.hodPageWorks.classList.add('c-hod__content--active');
+          };
+        });
+      };
     };
 
     initWidgets() {
@@ -258,7 +300,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
       if(this.elements.singlePieceVideosContainer) {
         this.elements.singlePieceVideosContainer.querySelectorAll('.c-vimeo-player').forEach(item => {
-          console.log();
           this.widgets[`singlePieceVimeoPlayer${item.dataset.code}`] =  new Plyr(item);
         });
       };
@@ -275,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
       if(this.elements.splashScreenCanvas) {
         paper.setup(this.elements.splashScreenCanvas);
-        console.log(paper);
+        // console.log(paper);
 
 
 
@@ -309,119 +350,146 @@ document.addEventListener("DOMContentLoaded", function(){
           strokeWidth: 10
         });
 
-        console.log(horizontalSawPath);
+        // const targetCircle = new paper.Path.Circle({
+        //   center: paper.view.center,
+        //   radius: 30,
+        //   fillColor: 'transparent'
+        // });
 
-        horizontalSawPath.tween({
-          'segments[0].point.y': paper.view.viewSize.height / 3,
-          'segments[1].point.y': (paper.view.viewSize.height / 3) * 2,
-          'segments[2].point.y': paper.view.viewSize.height / 3,
-          'segments[3].point.y': (paper.view.viewSize.height / 3) * 2,
-          'segments[4].point.y': paper.view.viewSize.height / 3,
-          }, {
-              easing: 'easeInOutCubic',
-              duration: 2000
-          }
-        );
+        this.widgets.splashScreenVideoPlayer.on('ready', (event) => {
+          const instance = event.detail.plyr;
+          console.log(event.detail);
+          // horizontalSawPath.tween({
+          //   'segments[0].point.y': paper.view.viewSize.height / 3,
+          //   'segments[1].point.y': (paper.view.viewSize.height / 3) * 2,
+          //   'segments[2].point.y': paper.view.viewSize.height / 3,
+          //   'segments[3].point.y': (paper.view.viewSize.height / 3) * 2,
+          //   'segments[4].point.y': paper.view.viewSize.height / 3,
+          //   }, {
+          //       easing: 'easeInOutCubic',
+          //       duration: 2000
+          //   }
+          // );
+  
+          // verticalLeftPath.tween({
+          //   'segments[0].point.y': 0,
+          //   }, {
+          //       easing: 'easeInOutCubic',
+          //       duration: 2000
+          //   }
+          // );
+  
+          // verticalRightPath.tween({
+          //   'segments[1].point.y': paper.view.viewSize.height,
+          //   }, {
+          //       easing: 'easeInOutCubic',
+          //       duration: 2000
+          //   }
+          // );
+        });
 
-        verticalLeftPath.tween({
-          'segments[0].point.y': 0,
-          }, {
-              easing: 'easeInOutCubic',
-              duration: 2000
-          }
-        );
 
-        verticalRightPath.tween({
-          'segments[1].point.y': paper.view.viewSize.height,
-          }, {
-              easing: 'easeInOutCubic',
-              duration: 2000
-          }
-        );
+        paper.view.onMouseMove = function(event) {
+          // targetCircle.position = event.point;
+
+          const nearestLocation = horizontalSawPath.getNearestLocation(event.point);
+
+          if((nearestLocation.distance <= 50) && nearestLocation.segment.index !== 0 && nearestLocation.segment.index !== 4) {
+            // targetCircle.tweenTo({ fillColor: '#D2F49A' }, {
+            //   easing: 'easeInOutCubic',
+            //   duration: 100
+            // });
+
+            if((horizontalSawPath.segments[nearestLocation.segment.index].point.y - event.point.y < 0) && event.delta.y < 0) {
+              if(
+                horizontalSawPath.segments[nearestLocation.segment.index].point.y + event.delta.y > 10 &&
+                horizontalSawPath.segments[nearestLocation.segment.index].point.y + event.delta.y < paper.view.bounds.height - 10
+                ) horizontalSawPath.segments[nearestLocation.segment.index].point.y = horizontalSawPath.segments[nearestLocation.segment.index].point.y + event.delta.y;
+            } else if ((horizontalSawPath.segments[nearestLocation.segment.index].point.y - event.point.y >= 0) && event.delta.y > 0) {
+              if(
+                horizontalSawPath.segments[nearestLocation.segment.index].point.y + event.delta.y > 10 &&
+                horizontalSawPath.segments[nearestLocation.segment.index].point.y + event.delta.y < paper.view.bounds.height - 10
+                ) horizontalSawPath.segments[nearestLocation.segment.index].point.y = horizontalSawPath.segments[nearestLocation.segment.index].point.y + event.delta.y;
+            }
+
+            if((horizontalSawPath.segments[nearestLocation.segment.index].point.x - event.point.x < 0) && event.delta.x < 0) {
+              if(
+                horizontalSawPath.segments[nearestLocation.segment.index].point.x + event.delta.x > 10 &&
+                horizontalSawPath.segments[nearestLocation.segment.index].point.x + event.delta.x < paper.view.bounds.width - 10
+              ) horizontalSawPath.segments[nearestLocation.segment.index].point.x = horizontalSawPath.segments[nearestLocation.segment.index].point.x + event.delta.x;
+            } else if ((horizontalSawPath.segments[nearestLocation.segment.index].point.x - event.point.x >= 0) && event.delta.x > 0) {
+              if(
+                horizontalSawPath.segments[nearestLocation.segment.index].point.x + event.delta.x > 10 &&
+                horizontalSawPath.segments[nearestLocation.segment.index].point.x + event.delta.x < paper.view.bounds.width - 10
+              ) horizontalSawPath.segments[nearestLocation.segment.index].point.x = horizontalSawPath.segments[nearestLocation.segment.index].point.x + event.delta.x;
+            }
+
+          };
+
+          // if((nearestLocation.distance > 30)) {
+          //   targetCircle.tweenTo({ fillColor: 'transparent' }, {
+          //     easing: 'easeInOutCubic',
+          //     duration: 100
+          //   });
+          // }
+        };
+
+        paper.view.onResize = function (event) {
+          console.log(horizontalSawPath.segments[4].point.x);
+          horizontalSawPath.segments[0].point.y = paper.view.viewSize.height / 3;
+          horizontalSawPath.segments[1].point.y = horizontalSawPath.segments[1].point.y + event.delta.height;
+          horizontalSawPath.segments[2].point.y = horizontalSawPath.segments[2].point.y + event.delta.height;
+          horizontalSawPath.segments[3].point.y = horizontalSawPath.segments[3].point.y + event.delta.height;
+          horizontalSawPath.segments[4].point.y = paper.view.viewSize.height / 3;
+          
+          horizontalSawPath.segments[0].point.x = 0;
+          horizontalSawPath.segments[1].point.x = horizontalSawPath.segments[1].point.x + event.delta.width;
+          horizontalSawPath.segments[2].point.x = horizontalSawPath.segments[2].point.x + event.delta.width;
+          horizontalSawPath.segments[3].point.x = horizontalSawPath.segments[3].point.x + event.delta.width;
+          horizontalSawPath.segments[4].point.x = paper.view.viewSize.width;
+
+          verticalRightPath.segments[0].point.y = 0;
+          verticalRightPath.segments[1].point.y = paper.view.viewSize.height;
+          verticalLeftPath.segments[0].point.y = 0 ;
+          verticalLeftPath.segments[1].point.y = paper.view.viewSize.height;
+          
+          verticalRightPath.segments[0].point.x = paper.view.viewSize.width -5 ;
+          verticalRightPath.segments[1].point.x = paper.view.viewSize.width -5 ;
+          verticalLeftPath.segments[0].point.x = 5 ;
+          verticalLeftPath.segments[1].point.x = 5 ;
+        };
+
+        paper.view.onClick = function (event) {
+          horizontalSawPath.tween({
+            'segments[0].point.y': paper.view.center.y,
+            'segments[1].point.y': paper.view.center.y,
+            'segments[2].point.y': paper.view.center.y,
+            'segments[3].point.y': paper.view.center.y,
+            'segments[4].point.y': paper.view.center.y,
+            }, {
+                easing: 'easeOutCubic',
+                duration: 1000
+            }
+          );
+
+          verticalLeftPath.tween({
+            'segments[0].point.y': paper.view.viewSize.height,
+            }, {
+                easing: 'easeInOutCubic',
+                duration: 1000
+            }
+          );
+  
+          verticalRightPath.tween({
+            'segments[1].point.y': 0,
+            }, {
+                easing: 'easeInOutCubic',
+                duration: 1000
+            }
+          );
+        };
       }
     };
-
-    // initCanvas() {
-    //   this.sizes.canvas = this.elements.canvas.getBoundingClientRect();
-    
-    //   this.canvasPoints.a.x = this.sizes.canvas.width / 4;
-    //   this.canvasPoints.a.y = this.sizes.canvas.height / 1.29363;
-    //   this.canvasPoints.b.x = this.sizes.canvas.width / 2;
-    //   this.canvasPoints.b.y = this.sizes.canvas.height / 3;
-    //   this.canvasPoints.c.x = this.sizes.canvas.width - this.sizes.canvas.width / 4;
-    //   this.canvasPoints.c.y = this.sizes.canvas.height / 1.29363;
-    
-    //   window.requestAnimationFrame(this.draw(this));
-    // };
-    
-    // setupCanvas(canvas) {
-    //   // Get the device pixel ratio, falling back to 1.
-    //   var dpr = window.devicePixelRatio || 1;
-    //   // Get the size of the canvas in CSS pixels.
-    //   var rect = canvas.getBoundingClientRect();
-    //   // Give the canvas pixel dimensions of their CSS
-    //   // size * the device pixel ratio.
-    //   canvas.width = rect.width * dpr;
-    //   canvas.height = rect.height * dpr;
-    //   var ctx = canvas.getContext('2d');
-    //   // Scale all drawing operations by the dpr, so you
-    //   // don't have to worry about the difference.
-    //   ctx.scale(dpr, dpr);
-    
-    //   return ctx;
-    // };
-
-    // draw(siteCtx) {
-    //   console.log(siteCtx);
-    //   let context = siteCtx.setupCanvas(this.elements.canvas);
-    
-    //   context.fillStyle = 'blue';
-    
-    //   context.lineWidth = 10;
-    
-    //   context.lineJoin = 'miter';
-    //   context.stroke();
-    
-    //   context.strokeStyle = "#000";
-    //   context.beginPath();
-    //   context.moveTo(0, this.sizes.canvas.height / 3);
-    //   context.lineTo(this.canvasPoints.a.x, this.canvasPoints.a.y);
-    //   context.lineTo(this.canvasPoints.b.x, this.canvasPoints.b.y);
-    //   context.lineTo(this.canvasPoints.c.x, this.canvasPoints.c.y); 
-    //   context.lineTo(this.sizes.canvas.width, this.sizes.canvas.height / 3);
-    //   context.stroke();
-      
-    //   context.lineWidth = 18;
-    //   context.beginPath();
-    //   context.moveTo(0, 0);
-    //   context.lineTo(0, this.sizes.canvas.height);
-    //   context.stroke();
-      
-    //   context.beginPath();
-    //   context.moveTo(this.sizes.canvas.width, 0);
-    //   context.lineTo(this.sizes.canvas.width, this.sizes.canvas.height);
-    //   context.stroke();
-    
-    //   // points.b.y++;
-    
-    //   window.requestAnimationFrame(this.draw);
-    // };
-
-    // handleMouseMove(point, event) {
-    //   if(
-    //     (point.x - event.offsetX < DISTANCE_LIMIT && point.x-event.offsetX > - DISTANCE_LIMIT) &&
-    //     (point.y - event.offsetY < DISTANCE_LIMIT && point.y-event.offsetY > - DISTANCE_LIMIT)
-    //   ) {
-    //     if((point.y - event.offsetY) < 0) {
-    //       if(point.y <= 8) return;
-    //       point.y = point.y - 3;
-    //     };
-    //     if((point.y - event.offsetY) >= 0) {
-    //       if(point.y >= (this.sizes.canvas.height - 8)) return;
-    //       point.y = point.y + 3;
-    //     };
-    //   }
-    // };
   };
   
   const hodworksSite = new HWSite();

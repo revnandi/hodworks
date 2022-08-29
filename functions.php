@@ -163,3 +163,42 @@ function find_closest($array, $date)
 		return $item;
 	}
 };
+
+// Custom query params
+add_action('init','add_get_val');
+function add_get_val() { 
+    global $wp; 
+    $wp->add_query_var('date'); 
+    $wp->add_query_var('piece'); 
+    $wp->add_query_var('type'); 
+};
+
+// Strip off URL parameter
+function strip_param_from_url($url, $param) {
+	$base_url = strtok($url, '?');                   // Get the base URL
+	$parsed_url = parse_url($url);                   // Parse it
+	if(array_key_exists('query',$parsed_url)) {       // Only execute if there are parameters
+			$query = $parsed_url['query'];               // Get the query string
+			parse_str($query, $parameters);              // Convert Parameters into array
+			unset($parameters[$param]);                  // Delete the one you want
+			$new_query = http_build_query($parameters);  // Rebuilt query string
+			$url =$base_url.'?'.$new_query;              // Finally URL is ready
+	}
+	return $url;
+}
+
+// Add or replace URL parameter
+function add_or_replace_url_param($add_to, $rem_from = array(), $clear_all = false){
+	if ($clear_all){
+			$query_string = array();
+	} else {
+			parse_str($_SERVER['QUERY_STRING'], $query_string);
+	}
+	if (!is_array($add_to)){ $add_to = array(); }
+	$query_string = array_merge($query_string, $add_to);
+	if (!is_array($rem_from)){ $rem_from = array($rem_from); }
+	foreach($rem_from as $key){
+			unset($query_string[$key]);
+	}
+	return http_build_query($query_string);
+}

@@ -12,6 +12,9 @@
     margin: 0;
     padding: 1rem 1.125rem;
     background: $color-primary;
+    &--open {
+      display: block;
+    }
   }
   &--compact {
   }

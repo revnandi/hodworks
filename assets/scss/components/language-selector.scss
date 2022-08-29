@@ -23,6 +23,7 @@
         content: '/';
         position: absolute;
         left: -0.5em;
+        transform: translateY(36%);
         font-style: normal;
         font-weight: 400;
         font-size: .8125rem;
@@ -30,6 +31,7 @@
         letter-spacing: 0.005em;
         text-transform: uppercase;
         @include breakpoint(medium) {
+          transform: translateY(0%);
           font-size: 1.1875rem;
           line-height: 1.157em;
         }
