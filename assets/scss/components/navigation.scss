@@ -5,18 +5,22 @@
     z-index: 1;
     position: fixed;
     top: 0;
-    left: 0;
-    display: none;
+    left: -100%;
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 1rem 1.125rem;
-    background: $color-primary;
+    background-color: transparent;
+    transition: left 300ms $ease, background-color 300ms $ease; 
     &--open {
-      display: block;
+      @include breakpoint(small) {
+        left: 0;
+        background-color: $color-primary;
+      }
     }
   }
   &--compact {
+
   }
   &__list {
     position: relative;
@@ -29,6 +33,9 @@
     }
     & > * + * {
       margin: .3125rem 0 0 0;
+      @include breakpoint(medium) {
+        margin: 0 0 0 1rem;
+      }
       @include breakpoint(medium_large) {
         margin: 0 0 0 2.5rem;
       }
@@ -41,6 +48,11 @@
         & #{ $self }__sub-list {
           display: flex;
         }
+      }
+    }
+    &--active {
+      a {
+        font-weight: 700;
       }
     }
   }
@@ -60,11 +72,13 @@
   }
   &__sub-list {
     padding: 0;
-    position: absolute;
-    bottom: -2em;
-    left: 0;
-    display: none;
     list-style: none;
+    @include breakpoint(medium) {
+      position: absolute;
+      bottom: -2em;
+      left: 0;
+      display: none;
+    }
     & > * + * {
       margin-left: 1em;
     }

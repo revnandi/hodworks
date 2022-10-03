@@ -18,6 +18,10 @@
   &__list-item {
     display: inline;
     word-break: break-word;
+    line-height: 1;
+    @include breakpoint(medium) {
+      line-height: inherit;
+    }
   }
   &__scroll-link {
     @include typographyHeadlineMedium;

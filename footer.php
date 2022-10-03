@@ -2,6 +2,9 @@
 
     <footer class="c-footer">
         <div class="c-footer__inner">
+            <div class="c-footer__supporters">
+                <?php the_field('text', 'option'); ?>
+            </div>
             <div class="c-footer__back">
                 <a href="#" class="c-footer__link">Off Alapítvány</a>
             </div>

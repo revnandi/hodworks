@@ -1,4 +1,10 @@
 .c-staff {
+  &__list-container {
+    background-color: $color-primary;
+    @include breakpoint(medium) {
+      background-color: $color-light;
+    }
+  }
   &__list {
     @include resetList;
     padding: 0 2.8125rem 2.8125rem 2.1875rem

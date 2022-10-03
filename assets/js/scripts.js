@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function(){
         piecesPastImageContainer: document.getElementById('hw_pieces_past_image_container'),
         piecesPastTitle: document.getElementById('hw_pieces_past_title'),
         companyYearList: document.getElementById('hw_company_list'),
+        companyTextContainer: document.getElementById('hw_company_text_container'),
+        companyTextContainerAlt: document.getElementById('hw_company_text_container_alt'),
         calendarYearsList: document.getElementById('hw_calendar_years'),
         calendarTablesContainer: document.getElementById('hw_calendar_tables'),
         canvasContainer: document.getElementById('hw_canvas_container'),
@@ -124,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function(){
         this.elements.menuButton.addEventListener('click', (e) => {
           e.currentTarget.classList.toggle('is-active');
           this.elements.menu.classList.toggle('c-main-navigation--open');
+          this.elements.header.classList.toggle('c-header--open');
         });
       };
 
@@ -170,12 +173,20 @@ document.addEventListener("DOMContentLoaded", function(){
             this.elements.companyYearList.querySelectorAll('h3').forEach(item => {
               item.classList.remove('c-company__year--active');
             });
+
+            e.target.classList.toggle('c-company__year--active');
             this.elements.companyYearList.querySelectorAll('div').forEach(item => {
               item.classList.remove('c-company__year-description--open');
             });
 
-            e.target.nextElementSibling.classList.toggle('c-company__year-description--open');
-            e.target.classList.toggle('c-company__year--active');
+            if(window.innerWidth <= 768) {
+              this.elements.companyTextContainerAlt.classList.add('c-company__text-container-alt--visible');
+              this.elements.companyTextContainer.classList.add('c-company__text-container--hidden');
+              this.elements.companyTextContainerAlt.innerHTML = e.target.nextElementSibling.innerHTML;
+            } else if(window.innerWidth > 768) {
+              e.target.nextElementSibling.classList.toggle('c-company__year-description--open');
+            };
+
           });
         });
       };

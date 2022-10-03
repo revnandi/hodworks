@@ -43,19 +43,31 @@
   }
   &__header {
     display: grid;
-    grid-template-columns: 2fr 6fr 4fr;
+    grid-template-columns: 2fr 4fr 6fr;
+    @include breakpoint(medium) {
+      grid-template-columns: 2fr 6fr 4fr;
+    }
   } 
   &__header-item {
     font-style: normal;
     font-weight: 700;
-    font-size: 1.1875rem;
-    line-height: 1.157em;
+    font-size: .625rem;
+    line-height: 1.1em;
     text-transform: uppercase;
+    @include breakpoint(medium) {
+      font-size: 1.1875rem;
+      line-height: 1.157em;
+    }
   }
   &__inner {
     display: flex;
-    padding: 0 2.8125rem;
+    flex-direction: column;
+    padding: 0 2.5rem;
     margin: 4.5rem 0 5.375rem 0;
+    @include breakpoint(medium) {
+      flex-direction: row;
+      padding: 0 2.8125rem;
+    }
   }
   &__table-container {
     display: flex;
@@ -72,25 +84,48 @@
   }
   &__row {
     display: grid;
-    grid-template-columns: 2fr 6fr 2fr 1fr 1fr;
+    grid-template-columns: 2fr 4fr 2fr 2fr 2fr;
     padding: 1.4375rem 0;
     border-bottom: 1px solid $color-dark;
+    @include breakpoint(medium) {
+      grid-template-columns: 2fr 6fr 2fr 1fr 1fr;
+    }
   }
   &__year-list {
     @include resetList;
+    display: flex;
     padding-right: 4.4375rem;
+    margin-bottom: 1.5rem;
+    & > * + * {
+      margin-left: 0.5rem;
+    }
+    @include breakpoint(medium) {
+      display: inline-block;
+      margin-bottom: 0;
+      & > * + * {
+        margin-left: 0;
+      }
+    }
   }
   &__year {
     font-style: normal;
     font-weight: 400;
-    font-size: 1.1875rem;
-    line-height: 1.578em;
+    font-size: .625rem;
+    line-height: 1.1em;
     cursor: pointer;
+    @include breakpoint(medium) {
+      font-size: 1.1875rem;
+      line-height: 1.578em;
+    }
     &--active {
       font-weight: 700;
     }
   }
   &__cell {
+    @include breakpoint(small) {
+      font-size: .625rem;
+      line-height: 1.1em;
+    }
     &--uppercase {
       text-transform: uppercase;
     }
@@ -99,5 +134,9 @@
     @include resetLink;
     font-weight: 700;
     text-transform: uppercase;
+    @include breakpoint(small) {
+      font-size: .625rem;
+      line-height: 1.1em;
+    }
   }
 }

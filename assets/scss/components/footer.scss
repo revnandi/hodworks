@@ -3,7 +3,24 @@
   &__inner {
     display: flex;
     justify-content: space-between;
-    padding: 2.25rem 2.8125rem;
+    flex-wrap: wrap;
+    padding: 1.5rem .9375rem 1rem 19px;
+    @include breakpoint(medium) {
+      padding: 2.25rem 2.8125rem;
+    };
+  }
+  &__supporters {
+    width: 100%;
+    margin-bottom: 2rem;
+    color: $color-medium;
+    font-style: normal;
+    font-weight: 400;
+    font-size: .9375rem;
+    line-height: 1.133em;
+    @include breakpoint(medium) {
+      font-size: 2.1875rem;
+      line-height: 1.142em;
+    }
   }
   &__list {
     display: flex;

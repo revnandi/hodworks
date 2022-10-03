@@ -1,8 +1,11 @@
 .c-color-box {
   position: relative;
   width: 50%;
-  aspect-ratio: 720 / 380;
+  min-height: 11.25rem;
   background-color: $color-primary;
+  @include breakpoint(medium) {
+    aspect-ratio: 720 / 380;
+  }
   &__inner {
     @include boxPadding;
     display: flex;

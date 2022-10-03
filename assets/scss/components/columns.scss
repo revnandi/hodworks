@@ -18,5 +18,11 @@
     &--green {
       background-color: $color-primary;
     }
+    &--mobile-row {
+      @include breakpoint(small) {
+        display: flex;
+
+      }
+    }
   }
 }

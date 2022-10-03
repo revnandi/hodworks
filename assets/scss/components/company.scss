@@ -1,10 +1,26 @@
 .c-company {
   &__list-container {
-    background-color: $color-primary;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    background-color: $color-light;
+    @include breakpoint(medium) {
+      display: inital;
+      background-color: $color-primary;
+    }
   }
   &__list {
     @include resetList;
-    @include boxPadding;
+    padding: 0 1.25rem;
+    @include breakpoint(medium) {
+      @include boxPadding;
+    }
+  }
+  &__item {
+    line-height: 1;
+    @include breakpoint(medium) {
+      line-height: inital;
+    }
   }
   &__year {
     cursor: pointer;
@@ -35,7 +51,9 @@
       line-height: 138.49%; 
     }
     &--open {
-      display: block;
+      @include breakpoint(medium) {
+        display: block;
+      }
     }
     @include breakpoint(medium) {
       font-weight: 400;
@@ -49,7 +67,28 @@
     }
   }
   &__text-container {
-    padding: 0 2.8125rem 2.8125rem 1.875rem;
+    padding: 1.1875rem 1.25rem 2.8125rem 1.125rem;
+    @include breakpoint(medium) {
+      padding: 0 2.8125rem 2.8125rem 1.875rem;
+    }
+    &--hidden {
+      @include breakpoint(small) {
+        display: none;
+      }
+    }
+  }
+  &__text-container-alt {
+    display: none;
+    padding: 1.1875rem 1.25rem 2.8125rem 1.125rem;
+    @include breakpoint(medium) {
+      padding: 0 2.8125rem 2.8125rem 1.875rem;
+    }
+    &--visible {
+      display: block;
+      @include breakpoint(medium) {
+        display: none!important;
+      }
+    }
   }
   &__years-container {
     background-color: $color-primary;

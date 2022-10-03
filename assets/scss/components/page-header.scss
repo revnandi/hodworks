@@ -1,6 +1,9 @@
 .c-page-header {
-  width: 100%;
   display: flex;
+  width: 100%;
+  @include breakpoint(small) {
+    min-height: 11.75rem;
+  }
   & > * {
     width: 50%;
   }

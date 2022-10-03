@@ -32,6 +32,16 @@
       }
     }
   }
+  &--open {
+    @include breakpoint(small) {
+      #{ $self }__inner {
+        padding-top: 0;
+      }
+      & .c-logo {
+        max-height: 0;
+      }
+    }
+  }
   &__canvas-container {
     width: 100%;
     height: 38px;
