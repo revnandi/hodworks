@@ -13,24 +13,25 @@
 		$loop = new WP_Query( $args ); 
 
 		$piece_dates = [];
-			
+
+		
 		while ( $loop->have_posts() ) : $loop->the_post();
-
-			$piece = get_field('piece');
-
+		
+		$piece = get_field('piece');
 			
 			if ($piece->post_name == $slug_to_match) :
 				$piece_to_add = [
-					'date' => strtotime($piece->date)
+					'date' => get_field('date'),
+					'location' => get_field('location')
 				];
 				array_push($piece_dates, $piece_to_add);
 			endif;
 
 		endwhile;
 
-		// groupBy($piece_dates, 'date');
-
-		// pretty_dump($piece_dates);
+		$date_and_location_to_display = array_reduce($piece_dates, function ($a, $b) {
+			return @$a['date'] > $b['date'] ? $a : $b ;
+		});
 	
 		wp_reset_postdata(); 
 
@@ -57,8 +58,8 @@
 					/>
 				<?php endif; ?>
 
-				<div class="c-piece__location">Trafó Budapest</div>
-				<div class="c-piece__date">03/27</div>
+				<div class="c-piece__location"><?php echo $date_and_location_to_display['location']; ?></div>
+				<div class="c-piece__date"><?php echo date('m/d', date($date_and_location_to_display['date'])); ?></div>
 			</div>
 		</div>
 
@@ -73,15 +74,15 @@
 			<div class="c-piece__column">
 				<div class="c-piece__menu">
 						<?php if (get_field('video')) : ?>
-							<button id="hw_single_piece_video_button" class="c-piece__menu-button">Videók</button>
+							<button id="hw_single_piece_video_button" class="c-piece__menu-button"><?php pll_e('Videos'); ?></button>
 						<?php endif; ?>
 						<?php if (get_field('gallery')) : ?>
-							<button id="hw_single_piece_gallery_button" class="c-piece__menu-button">Galéria</button>
+							<button id="hw_single_piece_gallery_button" class="c-piece__menu-button"><?php pll_e('Gallery'); ?></button>
 						<?php endif; ?>
 						<?php if (get_field('background_info')) : ?>
-							<button id="hw_single_piece_background_info_button" class="c-piece__menu-button">Háttér</button>
+							<button id="hw_single_piece_background_info_button" class="c-piece__menu-button"><?php pll_e('Background'); ?></button>
 						<?php endif; ?>
-						<button class="c-piece__menu-button">Sajtó</button>
+						<button class="c-piece__menu-button"><?php pll_e('Press'); ?></button>
 				</div>
 
 				<?php $gallery_images = get_field('gallery');

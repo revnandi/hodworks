@@ -3,6 +3,9 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   font-family: 'Arimo', sans-serif;
   color: $color-dark;
 }

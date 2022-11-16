@@ -85,6 +85,6 @@
 	</div>
 </section>
 
-<!-- <?php require get_template_directory() . '/partials/splash_screen.php'; ?> -->
+<?php require get_template_directory() . '/partials/splash_screen.php'; ?>
 
 <?php get_footer() ?>

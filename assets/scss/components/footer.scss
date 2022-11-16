@@ -27,8 +27,20 @@
     padding: 0;
     margin: 0;
     list-style: none;
+    @include breakpoint(medium) {
+      margin-top: 1em;
+    }
+    @include breakpoint(large) {
+      margin-top: 0;
+    }
     & > * + * {
       margin-left: 1rem;
+      @include breakpoint(medium) {
+        margin-left: 4rem;
+      }
+      @include breakpoint(large) {
+        margin-left: 4rem;
+      }
     }
   }
   &__link {
@@ -45,6 +57,19 @@
     }
     &:hover {
       color: $color-primary;
+    }
+  }
+  &__bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    @include breakpoint(medium) {
+      flex-direction: column;
+    }
+    @include breakpoint(large) {
+      flex-direction: row;
+      justify-content: space-between;
     }
   }
 }

@@ -3,7 +3,9 @@ import 'lazysizes/plugins/blur-up/ls.blur-up';
 import Plyr from 'plyr';
 import Splide from '@splidejs/splide';
 import * as paper from 'paper-jsdom';
-document.addEventListener("DOMContentLoaded", function(){
+import { UAParser } from 'ua-parser-js';
+import { throttle } from 'lodash';
+document.addEventListener('DOMContentLoaded', function(){
   // Handler when the DOM is fully loaded
 
   class HWSite {
@@ -54,7 +56,10 @@ document.addEventListener("DOMContentLoaded", function(){
         hodPageCv: document.getElementById('hw_hod_cv'),
         hodPageWorks: document.getElementById('hw_hod_works'),
       };
-      this.sizes = {};
+      this.state = {
+        isHeaderCompact: true,
+        sizes: {}
+      }
       this.canvasPoints = {
         a: {
           x: 100,
@@ -69,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function(){
           y: 200
         }
       };
+      this.userAgent = {}
       this.widgets = {
         hodPageState: {
           activeScreen: 'base'
@@ -77,50 +83,69 @@ document.addEventListener("DOMContentLoaded", function(){
 
       this.bindEvents();
       this.setSizes();
-      this.initStuff();
       this.initWidgets();
+      this.initStuff();
       // this.initCanvas();
     };
 
 
     setSizes() {
       if(this.elements.logo) {
-        this.sizes.logo = this.elements.logo.offsetHeight;
+        this.state.sizes.logo = this.elements.logo.offsetHeight;
       };
       if(this.elements.canvas) {
-        this.sizes.canvas = this.elements.canvas.getBoundingClientRect();
+        this.state.sizes.canvas = this.elements.canvas.getBoundingClientRect();
       };
       
       if(this.elements.header) {
-        this.sizes.header = this.elements.header.offsetHeight + 76;
-        console.log(this.sizes.header);
+        // this.elements.header.addEventListener('transitionend', (e) => {
+        //   this.state.sizes.header = this.elements.header.offsetHeight;
+        // });
       };
     };
 
     initStuff() {
-      this.elements.main.style.paddingTop = this.sizes.header + 76 + 'px';
+      // this.elements.header.addEventListener('transitionend', (e) => {
+      //   this.elements.main.style.paddingTop = this.state.sizes.header + 'px';
+      // });
+
+      this.userAgent = this.widgets.UAParser.getResult();
+      if(sessionStorage.getItem('hodworks_splash_screen_closed') === 'true') {
+        this.widgets.splashScreenVideoPlayer.pause();
+        this.elements.splashScreenContainer.remove();
+      };
     };
 
     bindEvents() {
+      let lastPos;
       const scrollFunction = () => {
-        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-          if(this.elements.menu && this.elements.header) {
-            this.elements.header.classList.add('c-header--compact');
-
-            this.elements.main.style.paddingTop = this.sizes.header + 'px';
-          };
+        console.log(this.state.isHeaderCompact);
+        if (Math.round(document.documentElement.scrollTop) > 100) {
+          // this.elements.header.addEventListener('transitionstart', (e) => {
+            //   console.log('transition start');
+            //   this.elements.main.style.paddingTop = this.state.sizes.header + 'px';
+            // });
+            console.log(Math.round(document.documentElement.scrollTop), lastPos);
+            if(!this.state.isHeaderCompact) {
+              this.elements.header.classList.add('c-header--compact');
+            }
+          this.state.isHeaderCompact = true;
+          // console.log(Math.round(document.documentElement.scrollTop));
         } else {
           if(this.elements.menu && this.elements.header) {
             this.elements.header.classList.remove('c-header--compact');
 
-            this.elements.main.style.paddingTop = this.sizes.header + 'px';
+            this.elements.main.style.paddingTop = this.state.sizes.header + 'px';
           };
+          this.state.isHeaderCompact = false;
         }
+        console.log(this.state.isHeaderCompact);
+        lastPos = Math.round(document.documentElement.scrollTop);
       };
 
-      window.onscroll = () => {
-        scrollFunction()
-      };
+      // window.onscroll = () => throttle(scrollFunction, 2000);
+
+      window.addEventListener('scroll', throttle(() => scrollFunction(), 250));
 
       if(this.elements.menuButton && this.elements.menu) {
         this.elements.menuButton.addEventListener('click', (e) => {
@@ -290,6 +315,8 @@ document.addEventListener("DOMContentLoaded", function(){
     };
 
     initWidgets() {
+      this.widgets.UAParser = new UAParser();
+
       if(this.elements.singlePieceGallery && this.elements.singlePieceGalleryList && this.elements.singlePieceThumbnailGallery && this.elements.singlePieceThumbnailGalleryList) {
         this.widgets.singlePieceGallery = new Splide( this.elements.singlePieceGallery, {
           type      : 'fade',
@@ -327,9 +354,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
       if(this.elements.splashScreenCanvas) {
         paper.setup(this.elements.splashScreenCanvas);
-        // console.log(paper);
-
-
 
         const horizontalSawPath = new paper.Path({
           segments: [
@@ -367,45 +391,44 @@ document.addEventListener("DOMContentLoaded", function(){
         //   fillColor: 'transparent'
         // });
 
-        this.widgets.splashScreenVideoPlayer.on('ready', (event) => {
+        this.widgets.splashScreenVideoPlayer.on('playing', (event) => {
           const instance = event.detail.plyr;
           console.log(event.detail);
-          // horizontalSawPath.tween({
-          //   'segments[0].point.y': paper.view.viewSize.height / 3,
-          //   'segments[1].point.y': (paper.view.viewSize.height / 3) * 2,
-          //   'segments[2].point.y': paper.view.viewSize.height / 3,
-          //   'segments[3].point.y': (paper.view.viewSize.height / 3) * 2,
-          //   'segments[4].point.y': paper.view.viewSize.height / 3,
-          //   }, {
-          //       easing: 'easeInOutCubic',
-          //       duration: 2000
-          //   }
-          // );
+          horizontalSawPath.tween({
+            'segments[0].point.y': paper.view.viewSize.height / 3,
+            'segments[1].point.y': (paper.view.viewSize.height / 3) * 2,
+            'segments[2].point.y': paper.view.viewSize.height / 3,
+            'segments[3].point.y': (paper.view.viewSize.height / 3) * 2,
+            'segments[4].point.y': paper.view.viewSize.height / 3,
+            }, {
+                easing: 'easeInOutCubic',
+                duration: 2000
+            }
+          );
   
-          // verticalLeftPath.tween({
-          //   'segments[0].point.y': 0,
-          //   }, {
-          //       easing: 'easeInOutCubic',
-          //       duration: 2000
-          //   }
-          // );
+          verticalLeftPath.tween({
+            'segments[0].point.y': 0,
+            }, {
+                easing: 'easeInOutCubic',
+                duration: 2000
+            }
+          );
   
-          // verticalRightPath.tween({
-          //   'segments[1].point.y': paper.view.viewSize.height,
-          //   }, {
-          //       easing: 'easeInOutCubic',
-          //       duration: 2000
-          //   }
-          // );
+          verticalRightPath.tween({
+            'segments[1].point.y': paper.view.viewSize.height,
+            }, {
+                easing: 'easeInOutCubic',
+                duration: 2000
+            }
+          );
         });
-
 
         paper.view.onMouseMove = function(event) {
           // targetCircle.position = event.point;
 
           const nearestLocation = horizontalSawPath.getNearestLocation(event.point);
 
-          if((nearestLocation.distance <= 50) && nearestLocation.segment.index !== 0 && nearestLocation.segment.index !== 4) {
+          if((nearestLocation.distance <= 30) && nearestLocation.segment.index !== 0 && nearestLocation.segment.index !== 4) {
             // targetCircle.tweenTo({ fillColor: '#D2F49A' }, {
             //   easing: 'easeInOutCubic',
             //   duration: 100
@@ -446,7 +469,6 @@ document.addEventListener("DOMContentLoaded", function(){
         };
 
         paper.view.onResize = function (event) {
-          console.log(horizontalSawPath.segments[4].point.x);
           horizontalSawPath.segments[0].point.y = paper.view.viewSize.height / 3;
           horizontalSawPath.segments[1].point.y = horizontalSawPath.segments[1].point.y + event.delta.height;
           horizontalSawPath.segments[2].point.y = horizontalSawPath.segments[2].point.y + event.delta.height;
@@ -470,7 +492,7 @@ document.addEventListener("DOMContentLoaded", function(){
           verticalLeftPath.segments[1].point.x = 5 ;
         };
 
-        paper.view.onClick = function (event) {
+        paper.view.onClick = (event) => {
           horizontalSawPath.tween({
             'segments[0].point.y': paper.view.center.y,
             'segments[1].point.y': paper.view.center.y,
@@ -481,7 +503,14 @@ document.addEventListener("DOMContentLoaded", function(){
                 easing: 'easeOutCubic',
                 duration: 1000
             }
-          );
+          ).then(() => {
+            this.elements.splashScreenContainer.classList.add('c-splash-screen--faded');
+            this.widgets.splashScreenVideoPlayer.pause();
+            setTimeout(() => {
+              this.elements.splashScreenContainer.remove();
+              // sessionStorage.setItem('hodworks_splash_screen_closed', true);
+            }, 1000);
+          });
 
           verticalLeftPath.tween({
             'segments[0].point.y': paper.view.viewSize.height,

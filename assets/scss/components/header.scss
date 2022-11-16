@@ -9,9 +9,8 @@
     position: relative;
     background: unset;
 
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
     width: 100%;
     background: $color-light;
     z-index: 1;

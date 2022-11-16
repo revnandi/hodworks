@@ -8,7 +8,7 @@
 define('IS_VITE_DEVELOPMENT', true);
 
 
-include "inc/inc.vite.php";
+include 'inc/inc.vite.php';
 
 
 // Register Menus
@@ -69,7 +69,7 @@ function add_menu_link_class($atts, $item, $args) {
 add_filter('nav_menu_link_attributes', 'add_menu_link_class', 1, 3);
 
 class My_Walker_Nav_Menu extends Walker_Nav_Menu {
-  function start_lvl(&$output, $depth) {
+  function start_lvl(&$output, $depth, $args) {
     $indent = str_repeat("\t", $depth);
     $output .= "\n$indent<ul class=\"c-main-navigation__sub-list\">\n";
   }
@@ -202,3 +202,11 @@ function add_or_replace_url_param($add_to, $rem_from = array(), $clear_all = fal
 	}
 	return http_build_query($query_string);
 }
+
+// Add Polylang string translations
+add_action('init', function() {
+  pll_register_string('single_piece_button_video', 'Videos', 'single_piece');
+  pll_register_string('single_piece_button_gallery', 'Gallery', 'single_piece');
+  pll_register_string('single_piece_button_background', 'Background', 'single_piece');
+  pll_register_string('single_piece_button_press', 'Press', 'single_piece');
+});

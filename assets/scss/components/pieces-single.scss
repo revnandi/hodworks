@@ -18,6 +18,9 @@
     @include breakpoint(medium) {
       padding-top: 0;
     }
+    & strong {
+      text-transform: uppercase;
+    }
   }
   &__image-container {
     position: relative;
