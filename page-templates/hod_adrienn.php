@@ -17,8 +17,8 @@ Template Name: Hod Adrienn
 			<div class="c-color-box__inner">
 				<h1><?php the_title(); ?></h1>
 				<div class="c-hod__buttons">
-					<button id="hw_hod_cv_button" class="c-hod__button">Szakmai életrajz</button>
-					<button id="hw_hod_works_button" class="c-hod__button">Mozgóképes munkák</button>
+					<button id="hw_hod_cv_button" class="c-hod__button"><?php pll_e('Professional biography'); ?></button>
+					<button id="hw_hod_works_button" class="c-hod__button"><?php pll_e('Motion picture works'); ?></button>
 				</div>
 			</div>
 		</div>

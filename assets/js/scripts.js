@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function(){
         companyTextContainerAlt: document.getElementById('hw_company_text_container_alt'),
         calendarYearsList: document.getElementById('hw_calendar_years'),
         calendarTablesContainer: document.getElementById('hw_calendar_tables'),
-        canvasContainer: document.getElementById('hw_canvas_container'),
-        canvas: document.getElementById('hw_canvas'),
+        headerCanvasContainer: document.getElementById('hw_canvas_container'),
+        headerCanvas: document.getElementById('hw_canvas'),
         singlePieceGalleriesContainer: document.getElementById('hw_single_piece_galleries_container'),
         singlePieceGallery: document.getElementById('hw_single_piece_gallery'),
         singlePieceGalleryList: document.getElementById('hw_single_piece_gallery_list'),
@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function(){
         hodPageContent: document.getElementById('hw_hod_content'),
         hodPageCv: document.getElementById('hw_hod_cv'),
         hodPageWorks: document.getElementById('hw_hod_works'),
+        newsVideoContainer: document.getElementById('hw_news_videos_container'),
       };
       this.state = {
         isHeaderCompact: true,
@@ -98,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function(){
       };
       
       if(this.elements.header) {
+        this.setMainMargin();
         // this.elements.header.addEventListener('transitionend', (e) => {
         //   this.state.sizes.header = this.elements.header.offsetHeight;
         // });
@@ -119,13 +121,13 @@ document.addEventListener('DOMContentLoaded', function(){
     bindEvents() {
       let lastPos;
       const scrollFunction = () => {
-        console.log(this.state.isHeaderCompact);
+        // console.log(this.state.isHeaderCompact);
         if (Math.round(document.documentElement.scrollTop) > 100) {
           // this.elements.header.addEventListener('transitionstart', (e) => {
             //   console.log('transition start');
             //   this.elements.main.style.paddingTop = this.state.sizes.header + 'px';
             // });
-            console.log(Math.round(document.documentElement.scrollTop), lastPos);
+            // console.log(Math.round(document.documentElement.scrollTop), lastPos);
             if(!this.state.isHeaderCompact) {
               this.elements.header.classList.add('c-header--compact');
             }
@@ -139,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function(){
           };
           this.state.isHeaderCompact = false;
         }
-        console.log(this.state.isHeaderCompact);
+        // console.log(this.state.isHeaderCompact);
         lastPos = Math.round(document.documentElement.scrollTop);
       };
 
@@ -246,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function(){
         });
       };
 
-      window.addEventListener('resize', this.initCanvas);
+      window.addEventListener('resize', () => this.initResize());
 
       if(this.elements.singlePieceSubContents.length > 0) {
 
@@ -338,7 +340,21 @@ document.addEventListener('DOMContentLoaded', function(){
 
       if(this.elements.singlePieceVideosContainer) {
         this.elements.singlePieceVideosContainer.querySelectorAll('.c-vimeo-player').forEach(item => {
-          this.widgets[`singlePieceVimeoPlayer${item.dataset.code}`] =  new Plyr(item);
+          this.widgets[`singlePieceVimeoPlayer${item.dataset.code}`] = new Plyr(item);
+        });
+      };
+
+      if(this.elements.newsVideoContainer) {
+        this.elements.newsVideoContainer.querySelectorAll('.c-vimeo-player').forEach(item => {
+          this.widgets[`newsVimeoPlayer${item.dataset.code}`] = new Plyr(item, {
+            volume: 0,
+            autoplay: true,
+            muted: true,
+            controls: false,
+            loop: {
+              active: true
+            }
+          });
         });
       };
 
@@ -528,8 +544,81 @@ document.addEventListener('DOMContentLoaded', function(){
             }
           );
         };
+      };
+
+      if(this.elements.headerCanvas) {
+        paper.setup(this.elements.headerCanvas);
+
+        const horizontalSawPath = new paper.Path({
+          segments: [
+            [3, paper.view.viewSize.height / 2],
+            [paper.view.viewSize.width / 4, (paper.view.viewSize.height / 3) * 2],
+            [(paper.view.viewSize.width / 4) * 2, paper.view.viewSize.height / 3],
+            [(paper.view.viewSize.width / 4) * 3, (paper.view.viewSize.height / 3) * 2],
+            [paper.view.viewSize.width - 3, paper.view.viewSize.height / 2]
+          ],
+          strokeColor: '#000000',
+          strokeWidth: 5
+        });
+
+        const verticalLeftPath = new paper.Path({
+          segments: [
+            [5, paper.view.viewSize.height],
+            [5, 0]
+          ],
+          strokeColor: '#000000',
+          strokeWidth: 5,
+        });
+
+        const verticalRightPath = new paper.Path({
+          segments: [
+            [paper.view.viewSize.width - 5, paper.view.viewSize.height],
+            [paper.view.viewSize.width - 5, 0]
+          ],
+          strokeColor: '#000000',
+          strokeWidth: 5,
+        });
+
+        paper.view.onResize = function (event) {
+
+          horizontalSawPath.segments[0].point.x = 3;
+          horizontalSawPath.segments[0].point.y = paper.view.viewSize.height / 2;
+          horizontalSawPath.segments[1].point.x = paper.view.viewSize.width / 4;
+          horizontalSawPath.segments[1].point.y = (paper.view.viewSize.height / 3) * 2;
+          horizontalSawPath.segments[2].point.x = (paper.view.viewSize.width / 4) * 2;
+          horizontalSawPath.segments[2].point.y = paper.view.viewSize.height / 3;
+          horizontalSawPath.segments[3].point.x = (paper.view.viewSize.width / 4) * 3;
+          horizontalSawPath.segments[3].point.y = (paper.view.viewSize.height / 3) * 2;
+          horizontalSawPath.segments[4].point.x = paper.view.viewSize.width - 3;
+          horizontalSawPath.segments[4].point.y = paper.view.viewSize.height / 2;
+
+          verticalLeftPath.segments[0].point.x = 5;
+          verticalLeftPath.segments[1].point.x = 5;
+
+          verticalRightPath.segments[0].point.x = paper.view.viewSize.width - 5;
+          verticalRightPath.segments[1].point.x = paper.view.viewSize.width - 5;
+
+          paper.view.red
+        };
+
+      };
+    };
+
+    setMainMargin() {
+      if(this.elements.header && this.elements.main) {
+        this.widgets.elementResizeObserver = new ResizeObserver(entries => {
+        // this will get called whenever div dimension changes
+        this.elements.main.style.marginTop = `${this.elements.header.offsetHeight}px`;
+        });
+        this.widgets.elementResizeObserver.observe(this.elements.header);
       }
     };
+
+    initResize() {
+      // this.initCanvas;
+      this.setMainMargin;
+    };
+    
   };
   
   const hodworksSite = new HWSite();

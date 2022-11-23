@@ -10,7 +10,7 @@
 			</div>
 
 			<div id="hw_pieces_current_title" class="c-pieces__title-container">
-				<div class="c-pieces__title-container-inner">Futó előadások</div>
+				<div class="c-pieces__title-container-inner"><?php pll_e('Current Pieces'); ?></div>
 			</div>
 
 			<ul id="hw_pieces_past_list" class="c-pieces__list">
@@ -46,7 +46,7 @@
 			</div>
 
 			<div  id="hw_pieces_past_title" class="c-pieces__title-container c-pieces__title-container--inverse">
-				<div class="c-pieces__title-container-inner">Régi darabok</div>
+				<div class="c-pieces__title-container-inner"><?php pll_e('Past Pieces'); ?></div>
 			</div>
 
 			<ul id="hw_pieces_current_list" class="c-pieces__list">

@@ -10,7 +10,7 @@
 // on production everything will work just fine
 
 //import vue from '@vitejs/plugin-vue'
-import liveReload from 'vite-plugin-live-reload'
+import liveReload from 'vite-plugin-live-reload';
 const { resolve } = require('path')
 const fs = require('fs')
 
@@ -20,7 +20,7 @@ export default {
 
   plugins: [
     //vue(),
-    liveReload(__dirname+'/**/*.php')
+    liveReload(__dirname+'/**/*.php'),
   ],
 
   // config

@@ -69,7 +69,7 @@ function add_menu_link_class($atts, $item, $args) {
 add_filter('nav_menu_link_attributes', 'add_menu_link_class', 1, 3);
 
 class My_Walker_Nav_Menu extends Walker_Nav_Menu {
-  function start_lvl(&$output, $depth, $args) {
+  function start_lvl(&$output, $depth = 0, $args = array()) {
     $indent = str_repeat("\t", $depth);
     $output .= "\n$indent<ul class=\"c-main-navigation__sub-list\">\n";
   }
@@ -205,8 +205,35 @@ function add_or_replace_url_param($add_to, $rem_from = array(), $clear_all = fal
 
 // Add Polylang string translations
 add_action('init', function() {
+  pll_register_string('archive_pieces', 'Current Pieces', 'hod');
+  pll_register_string('archive_pieces', 'Past Pieces', 'hod');
   pll_register_string('single_piece_button_video', 'Videos', 'single_piece');
   pll_register_string('single_piece_button_gallery', 'Gallery', 'single_piece');
   pll_register_string('single_piece_button_background', 'Background', 'single_piece');
   pll_register_string('single_piece_button_press', 'Press', 'single_piece');
+  pll_register_string('page_title_staff', 'Staff', 'staff');
+  pll_register_string('page_title_cocreators', 'Co-Creators', 'cocreators');
+  pll_register_string('page_title_news', 'News', 'home');
+  pll_register_string('page_title_hod', 'Adrienn Hód', 'hod');
+  pll_register_string('hod_cv_button', 'Professional biography', 'hod');
+  pll_register_string('hod_works_button', 'Motion picture works', 'hod');
 });
+
+function get_page_ID() {
+  //if on the blog page
+	if ( is_home() && ! in_the_loop() ) {
+		pretty_dump('is home or is not in the loop');
+		pretty_dump(wp_title());
+    $ID = get_option('page_for_posts');
+	} elseif ( is_post_type_archive()) {
+		//reference a custom archive page based it's slug
+		//eg. for a 'houses' custom post type, you would create a page called `houses` and store any archive front matter on this page
+		$query = get_queried_object();
+		$slug = $query->name;
+		$pageobj = get_page_by_path($slug);
+		$ID = $pageobj->ID;
+	} else {
+		$ID = get_the_ID();
+	}
+	return $ID;
+}

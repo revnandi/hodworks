@@ -49,6 +49,14 @@
         font-size: 1.1875rem;
         line-height: 1.157em;
       }
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+    &.current-lang {
+      a {
+        font-weight: 700;
+      }
     }
   }
 }

@@ -5,7 +5,7 @@
             <div class="c-columns__column c-columns__column--green">
                 <div class="c-color-box">
                     <div class="c-color-box__inner">
-                        <h1>Stáb</h1>
+                        <h1><?php pll_e('Staff'); ?></h1>
                     </div>
                 </div>
             </div>

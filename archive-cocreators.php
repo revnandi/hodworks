@@ -5,7 +5,7 @@
 	<div class="c-cocreators__header">
 		<div class="c-color-box">
 			<div class="c-color-box__inner">
-				<h1>Alkotótársak</h1>
+				<h1><?php pll_e('Co-Creators'); ?></h1>
 			</div>
 		</div>
 
