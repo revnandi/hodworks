@@ -1,5 +1,6 @@
 .c-main-navigation {
   $self: &;
+  width: 100%;
   margin: 2.375rem 0 0 0;
   @include breakpoint(small) {
     z-index: 1;
@@ -19,8 +20,7 @@
       }
     }
   }
-  &--compact {
-
+  @include breakpoint(medium_large) {
   }
   &__list {
     position: relative;

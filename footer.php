@@ -6,6 +6,10 @@
                 <div class="c-footer__supporters c-footer__supporters--alt">
                     <?php the_field('company_page_text', 'option'); ?>
                 </div>
+            <?php elseif(is_front_page()): ?>
+                <div class="c-footer__supporters">
+                    <?php the_field('home_page_text', 'option'); ?>
+                </div>
             <?php else: ?>
                 <div class="c-footer__supporters">
                     <?php the_field('text', 'option'); ?>

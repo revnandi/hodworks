@@ -4,7 +4,9 @@
 @import './base.scss';
 
 @import './libs/plyr/plyr';
-@import './libs/splider';
+// import '@splidejs/splide/css';
+@import './libs/bigpicture.scss';
+
 
 @import './components/header.scss';
 @import './components/footer.scss';

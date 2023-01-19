@@ -211,6 +211,7 @@ add_action('init', function() {
   pll_register_string('single_piece_button_gallery', 'Gallery', 'single_piece');
   pll_register_string('single_piece_button_background', 'Background', 'single_piece');
   pll_register_string('single_piece_button_press', 'Press', 'single_piece');
+  pll_register_string('single_piece_button_description', 'Description', 'single_piece');
   pll_register_string('page_title_staff', 'Staff', 'staff');
   pll_register_string('page_title_cocreators', 'Co-Creators', 'cocreators');
   pll_register_string('page_title_news', 'News', 'home');

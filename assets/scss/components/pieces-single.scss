@@ -96,6 +96,9 @@
       font-size: 1.6875rem;
       line-height: 1.148em;
     }
+    &--hidden {
+      display: none;
+    }
   }
   &__background-info-container {
     padding: 1rem 1.125rem;
@@ -115,17 +118,21 @@
       width: 100%;
     }
     & .splide__arrow {
+      width: 3rem;
+      height: auto;
       background: none;
       border: none;
       cursor: pointer;
       & svg {
+        width: 3rem;
+        height: auto;
         path {
           fill: $color-primary;
         }
       }
-      &--prev {
-        transform: rotate(180deg);
-      }
+      // &--prev {
+      //   transform: rotate(180deg);
+      // }
     }
   }
   &__gallery-slide {

@@ -2,6 +2,8 @@ import lazySizes from 'lazysizes';
 import 'lazysizes/plugins/blur-up/ls.blur-up';
 import Plyr from 'plyr';
 import Splide from '@splidejs/splide';
+import BigPicture from 'bigpicture';
+import '@splidejs/splide/css';
 import * as paper from 'paper-jsdom';
 import { UAParser } from 'ua-parser-js';
 import { throttle } from 'lodash';
@@ -47,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function(){
         singlePieceVideoButton: document.getElementById('hw_single_piece_video_button'),
         singlePieceGalleryButton: document.getElementById('hw_single_piece_gallery_button'),
         singlePieceInfoButton: document.getElementById('hw_single_piece_background_info_button'),
+        singlePieceDescriptionButton: document.getElementById('hw_single_piece_description_button'),
         splashScreenContainer: document.getElementById('hw_splash_screen'),
         splashScreenVideo: document.getElementById('hw_splash_screen_video'),
         splashScreenCanvas: document.getElementById('hw_splash_screen_canvas'),
@@ -119,33 +122,17 @@ document.addEventListener('DOMContentLoaded', function(){
     };
 
     bindEvents() {
-      let lastPos;
       const scrollFunction = () => {
-        // console.log(this.state.isHeaderCompact);
-        if (Math.round(document.documentElement.scrollTop) > 100) {
-          // this.elements.header.addEventListener('transitionstart', (e) => {
-            //   console.log('transition start');
-            //   this.elements.main.style.paddingTop = this.state.sizes.header + 'px';
-            // });
-            // console.log(Math.round(document.documentElement.scrollTop), lastPos);
-            if(!this.state.isHeaderCompact) {
+        if(this.elements.menu && this.elements.header) {
+          if (Math.round(document.documentElement.scrollTop) > 50) {
               this.elements.header.classList.add('c-header--compact');
-            }
-          this.state.isHeaderCompact = true;
-          // console.log(Math.round(document.documentElement.scrollTop));
-        } else {
-          if(this.elements.menu && this.elements.header) {
+          } else {
             this.elements.header.classList.remove('c-header--compact');
 
             this.elements.main.style.paddingTop = this.state.sizes.header + 'px';
           };
-          this.state.isHeaderCompact = false;
-        }
-        // console.log(this.state.isHeaderCompact);
-        lastPos = Math.round(document.documentElement.scrollTop);
+        };
       };
-
-      // window.onscroll = () => throttle(scrollFunction, 2000);
 
       window.addEventListener('scroll', throttle(() => scrollFunction(), 250));
 
@@ -260,7 +247,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
         if(this.elements.singlePieceGalleriesContainer && this.elements.singlePieceGalleryButton) {
           this.elements.singlePieceGalleryButton.addEventListener('click', (e) => {
-            console.log(e);
             resetSubContents();
             this.elements.singlePieceGalleriesContainer.classList.add('c-piece__sub-content--active');
           });
@@ -268,7 +254,6 @@ document.addEventListener('DOMContentLoaded', function(){
   
         if(this.elements.singlePieceVideosContainer && this.elements.singlePieceVideoButton) {
           this.elements.singlePieceVideoButton.addEventListener('click', (e) => {
-            console.log(e);
             resetSubContents();
             this.elements.singlePieceVideosContainer.classList.add('c-piece__sub-content--active');
           });
@@ -276,9 +261,18 @@ document.addEventListener('DOMContentLoaded', function(){
 
         if(this.elements.singlePieceInfoContainer && this.elements.singlePieceInfoButton) {
           this.elements.singlePieceInfoButton.addEventListener('click', (e) => {
-            console.log(e);
             resetSubContents();
             this.elements.singlePieceInfoContainer.classList.add('c-piece__sub-content--active');
+            this.elements.singlePieceInfoButton.classList.add('c-piece__menu-button--hidden');
+            this.elements.singlePieceDescriptionButton.classList.remove('c-piece__menu-button--hidden');
+          });
+        };
+        
+        if(this.elements.singlePieceInfoContainer && this.elements.singlePieceDescriptionButton) {
+          this.elements.singlePieceDescriptionButton.addEventListener('click', (e) => {
+            resetSubContents();
+            this.elements.singlePieceDescriptionButton.classList.add('c-piece__menu-button--hidden');
+            this.elements.singlePieceInfoButton.classList.remove('c-piece__menu-button--hidden');
           });
         };
       };
@@ -329,13 +323,28 @@ document.addEventListener('DOMContentLoaded', function(){
           fixedWidth: 100,
           gap       : 0,
           rewind    : true,
+          rewind    : true,
           pagination: false,
-          arrows    : false,
+          arrows    : false,  
         } );
 
         this.widgets.singlePieceGallery.sync( this.widgets.singlePieceThumbnailGallery );
         this.widgets.singlePieceGallery.mount();
         this.widgets.singlePieceThumbnailGallery.mount();
+
+        console.log(this.elements.singlePieceGallery.querySelectorAll('.splide__slide img'));
+
+        this.elements.singlePieceGallery.querySelectorAll('.splide__slide img').forEach((item) => {
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log(item);
+            this.widgets.bigPicture = BigPicture({
+              el: e.currentTarget,
+              gallery: '#hw_single_piece_gallery_list',
+              galleryAttribute: 'data-bp',
+            })
+          })
+        })
       };
 
       if(this.elements.singlePieceVideosContainer) {
@@ -370,6 +379,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
       if(this.elements.splashScreenCanvas) {
         paper.setup(this.elements.splashScreenCanvas);
+        paper.projects[0].activate();
 
         const horizontalSawPath = new paper.Path({
           segments: [
@@ -408,14 +418,14 @@ document.addEventListener('DOMContentLoaded', function(){
         // });
 
         this.widgets.splashScreenVideoPlayer.on('playing', (event) => {
+
           const instance = event.detail.plyr;
-          console.log(event.detail);
           horizontalSawPath.tween({
-            'segments[0].point.y': paper.view.viewSize.height / 3,
-            'segments[1].point.y': (paper.view.viewSize.height / 3) * 2,
-            'segments[2].point.y': paper.view.viewSize.height / 3,
-            'segments[3].point.y': (paper.view.viewSize.height / 3) * 2,
-            'segments[4].point.y': paper.view.viewSize.height / 3,
+            'segments[0].point.y': paper.projects[0].view.viewSize.height / 3,
+            'segments[1].point.y': (paper.projects[0].view.viewSize.height / 3) * 2,
+            'segments[2].point.y': paper.projects[0].view.viewSize.height / 3,
+            'segments[3].point.y': (paper.projects[0].view.viewSize.height / 3) * 2,
+            'segments[4].point.y': paper.projects[0].view.viewSize.height / 3,
             }, {
                 easing: 'easeInOutCubic',
                 duration: 2000
@@ -431,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function(){
           );
   
           verticalRightPath.tween({
-            'segments[1].point.y': paper.view.viewSize.height,
+            'segments[0].point.y': paper.projects[0].view.viewSize.height,
             }, {
                 easing: 'easeInOutCubic',
                 duration: 2000
@@ -547,9 +557,11 @@ document.addEventListener('DOMContentLoaded', function(){
       };
 
       if(this.elements.headerCanvas) {
-        paper.setup(this.elements.headerCanvas);
+        this.widgets.paper = paper.setup(this.elements.headerCanvas);
+        
+        if(paper.projects.length > 1) paper.projects[1].activate();
 
-        const horizontalSawPath = new paper.Path({
+        const horizontalSawPath2 = new paper.Path({
           segments: [
             [3, paper.view.viewSize.height / 2],
             [paper.view.viewSize.width / 4, (paper.view.viewSize.height / 3) * 2],
@@ -561,7 +573,7 @@ document.addEventListener('DOMContentLoaded', function(){
           strokeWidth: 5
         });
 
-        const verticalLeftPath = new paper.Path({
+        const verticalLeftPath2 = new paper.Path({
           segments: [
             [5, paper.view.viewSize.height],
             [5, 0]
@@ -570,7 +582,7 @@ document.addEventListener('DOMContentLoaded', function(){
           strokeWidth: 5,
         });
 
-        const verticalRightPath = new paper.Path({
+        const verticalRightPath2 = new paper.Path({
           segments: [
             [paper.view.viewSize.width - 5, paper.view.viewSize.height],
             [paper.view.viewSize.width - 5, 0]
@@ -581,24 +593,22 @@ document.addEventListener('DOMContentLoaded', function(){
 
         paper.view.onResize = function (event) {
 
-          horizontalSawPath.segments[0].point.x = 3;
-          horizontalSawPath.segments[0].point.y = paper.view.viewSize.height / 2;
-          horizontalSawPath.segments[1].point.x = paper.view.viewSize.width / 4;
-          horizontalSawPath.segments[1].point.y = (paper.view.viewSize.height / 3) * 2;
-          horizontalSawPath.segments[2].point.x = (paper.view.viewSize.width / 4) * 2;
-          horizontalSawPath.segments[2].point.y = paper.view.viewSize.height / 3;
-          horizontalSawPath.segments[3].point.x = (paper.view.viewSize.width / 4) * 3;
-          horizontalSawPath.segments[3].point.y = (paper.view.viewSize.height / 3) * 2;
-          horizontalSawPath.segments[4].point.x = paper.view.viewSize.width - 3;
-          horizontalSawPath.segments[4].point.y = paper.view.viewSize.height / 2;
+          horizontalSawPath2.segments[0].point.x = 3;
+          horizontalSawPath2.segments[0].point.y = paper.view.viewSize.height / 2;
+          horizontalSawPath2.segments[1].point.x = paper.view.viewSize.width / 4;
+          horizontalSawPath2.segments[1].point.y = (paper.view.viewSize.height / 3) * 2;
+          horizontalSawPath2.segments[2].point.x = (paper.view.viewSize.width / 4) * 2;
+          horizontalSawPath2.segments[2].point.y = paper.view.viewSize.height / 3;
+          horizontalSawPath2.segments[3].point.x = (paper.view.viewSize.width / 4) * 3;
+          horizontalSawPath2.segments[3].point.y = (paper.view.viewSize.height / 3) * 2;
+          horizontalSawPath2.segments[4].point.x = paper.view.viewSize.width - 3;
+          horizontalSawPath2.segments[4].point.y = paper.view.viewSize.height / 2;
 
-          verticalLeftPath.segments[0].point.x = 5;
-          verticalLeftPath.segments[1].point.x = 5;
+          verticalLeftPath2.segments[0].point.x = 5;
+          verticalLeftPath2.segments[1].point.x = 5;
 
-          verticalRightPath.segments[0].point.x = paper.view.viewSize.width - 5;
-          verticalRightPath.segments[1].point.x = paper.view.viewSize.width - 5;
-
-          paper.view.red
+          verticalRightPath2.segments[0].point.x = paper.view.viewSize.width - 5;
+          verticalRightPath2.segments[1].point.x = paper.view.viewSize.width - 5;
         };
 
       };
@@ -623,5 +633,4 @@ document.addEventListener('DOMContentLoaded', function(){
   
   const hodworksSite = new HWSite();
 
-  console.log(hodworksSite);
 });

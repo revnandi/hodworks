@@ -17,7 +17,7 @@
 		
 		while ( $loop->have_posts() ) : $loop->the_post();
 		
-		$piece = get_field('piece');
+			$piece = get_field('piece');
 			
 			if ($piece->post_name == $slug_to_match) :
 				$piece_to_add = [
@@ -56,10 +56,14 @@
 					data-src="<?php echo $post_image[0] ?>"
 					alt="<?php echo $post->post_title ?>"
 					/>
-				<?php endif; ?>
+					<?php endif; ?>
+				
+				<?php if($date_and_location_to_display): ?>
 
-				<div class="c-piece__location"><?php echo $date_and_location_to_display['location']; ?></div>
-				<div class="c-piece__date"><?php echo date('m/d', date($date_and_location_to_display['date'])); ?></div>
+					<div class="c-piece__location"><?php echo $date_and_location_to_display['location']; ?></div>
+					<div class="c-piece__date"><?php echo date('m/d', date($date_and_location_to_display['date'])); ?></div>
+
+				<?php endif; ?>
 			</div>
 		</div>
 
@@ -82,6 +86,9 @@
 						<?php if (get_field('background_info')) : ?>
 							<button id="hw_single_piece_background_info_button" class="c-piece__menu-button"><?php pll_e('Background'); ?></button>
 						<?php endif; ?>
+						<?php if (get_field('background_info')) : ?>
+							<button id="hw_single_piece_description_button" class="c-piece__menu-button c-piece__menu-button--hidden"><?php pll_e('Description'); ?></button>
+						<?php endif; ?>
 						<button class="c-piece__menu-button"><?php pll_e('Press'); ?></button>
 				</div>
 
@@ -100,14 +107,18 @@
 									<?php foreach( $gallery_images as $image ): ?>
 
 										<li class="splide__slide c-piece__gallery-slide">
-											<a href="<?php echo esc_url($image['url']); ?>" target="_blank">
-												<img
-													class="lazyload blur-up"
-													src="<?php echo esc_url($image['sizes']['lqip']); ?>"
-													data-src="<?php echo esc_url($image['sizes']['large']); ?>"
-													alt="<?php echo esc_attr($image['alt']); ?>" />
-											</a>
-											<p><?php echo esc_html($image['caption']); ?></p>
+											<img
+												class="lazyload blur-up"
+												data-sizes="auto"
+												data-bp="<?php echo esc_url($image['sizes']['1536x1536']); ?>"
+												src="<?php echo esc_url($image['sizes']['lqip']); ?>"
+												data-srcset="<?php echo esc_url($image['sizes']['thumbnail']); ?> 150w,
+													<?php echo esc_url($image['sizes']['medium']); ?> 300w,
+													<?php echo esc_url($image['sizes']['medium_large']); ?> 768w,
+													<?php echo esc_url($image['sizes']['large']); ?>  1024w,
+													<?php echo esc_url($image['sizes']['1536x1536']); ?> 1536w,
+													<?php echo esc_url($image['sizes']['2048x2048']); ?> 2048w"
+												alt="<?php echo esc_attr($image['alt']); ?>" />
 										</li>
 
 									<?php endforeach; ?>
@@ -131,7 +142,6 @@
 												src="<?php echo esc_url($image['sizes']['thumbnail']); ?>"
 												data-src="<?php echo esc_url($image['sizes']['thumbnail']); ?>"
 												alt="<?php echo esc_attr($image['alt']); ?>" />
-											<p><?php echo esc_html($image['caption']); ?></p>
 										</li>
 										
 									<?php endforeach; ?>

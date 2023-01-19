@@ -1,4 +1,9 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) )
+    exit;  
+    
 /*
  * VITE & Tailwind JIT development
  * Inspired by https://github.com/andrefelipe/vite-php-setup
@@ -46,16 +51,16 @@ add_action( 'wp_enqueue_scripts', function() {
             $manifest_key = array_keys($manifest);
             if (isset($manifest_key[0])) {
                 
+               // enqueue main JS file
+               $js_file = @$manifest[$manifest_key[1]]['file'];
+               if ( ! empty($js_file)) {
+                   wp_enqueue_script( 'main', DIST_URI . '/' . $js_file, JS_DEPENDENCY, '', JS_LOAD_IN_FOOTER );
+               }
+
                 // enqueue CSS files
-                foreach(@$manifest[$manifest_key[0]]['css'] as $css_file) {
-                    wp_enqueue_style( 'main', DIST_URI . '/' . $css_file );
-                }
-                
-                // enqueue main JS file
-                $js_file = @$manifest[$manifest_key[0]]['file'];
-                if ( ! empty($js_file)) {
-                    wp_enqueue_script( 'main', DIST_URI . '/' . $js_file, JS_DEPENDENCY, '', JS_LOAD_IN_FOOTER );
-                }
+               foreach(@$manifest[$manifest_key[0]] as $css_file) {
+                   wp_enqueue_style( 'main', DIST_URI . '/' . $css_file );
+               }
                 
             }
 
