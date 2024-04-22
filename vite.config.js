@@ -14,7 +14,11 @@ import { defineConfig } from 'vite';
 import liveReload from 'vite-plugin-live-reload';
 const { resolve } = require('path');
 const fs = require('fs');
+import { homedir } from 'os';
+// import laravel from 'laravel-vite-plugin';
 
+let host = 'hodworks.test';
+let homeDir = homedir();
 
 
 // https://vitejs.dev/config
@@ -23,6 +27,10 @@ export default defineConfig({
   plugins: [
     //vue(),
     liveReload(__dirname+'/**/*.php'),
+    // laravel([
+    //     'resources/css/app.css',
+    //     'resources/js/app.js',
+    // ]),
   ],
 
   // config
@@ -83,13 +91,14 @@ export default defineConfig({
     // > mkcert localhost (in project folder files localhost-key.pem & localhost.pem will be created)
     // uncomment below to enable https
     // https: {
-    //  key: fs.readFileSync('localhost-key.pem'),
-    //  cert: fs.readFileSync('localhost.pem'),
+    //   key: fs.readFileSync(resolve(homeDir, `.config/valet/Certificates/${host}.key`)),
+    //   cert: fs.readFileSync(resolve(homeDir, `.config/valet/Certificates/${host}.crt`)),
     // },
 
+    host: 'localhost',
     hmr: {
       host: 'localhost',
-      // port: 8888
+      port: 8888
     },
     
   },

@@ -9,6 +9,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.4",
     "cross-env": "^7.0.3",
+    "laravel-vite-plugin": "^0.7.4",
     "mkcert": "^1.5.1",
     "sass": "^1.56.2",
     "vite": "^4.0.0",

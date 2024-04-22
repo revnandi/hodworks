@@ -64,7 +64,7 @@
 
     // Sort array
     usort($formatted_performances, function ($a, $b) {
-      return $a['date'] - $b['date'];
+      return $b['date'] - $a['date'];
     });
 
     $year_groups = groupBy($formatted_performances, 'year');
@@ -77,10 +77,10 @@
 
     $latest_performance = find_closest($future_performances, date('U'));
 
-    $latest_performance_image_lqip = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance['id'])), 'lqip');
-	$latest_performance_image = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance['id'])),  'medium_large');
-	$latest_performance_piece_image_lqip = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance['performance_id'])), 'lqip');
-	$latest_performance_piece_image = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance['performance_id'])),  'medium_large');
+  $latest_performance_image_lqip = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance["id"])), "lqip");
+	$latest_performance_image = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance["id"])),  "medium_large");
+	$latest_performance_piece_image_lqip = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance["performance_id"])), "lqip");
+	$latest_performance_piece_image = wp_get_attachment_image_src((get_post_thumbnail_id( $latest_performance["performance_id"])),  "medium_large");
   ?>
 
 <?php endif; ?>
@@ -110,10 +110,10 @@
 				/>
             <?php endif; ?>
 			<div class="c-calendar__image-date-title">
-                <span><?php echo date('m', $latest_performance['date'])?>/<?php echo date('d', $latest_performance['date'])?></span>
-                <span><?php echo $latest_performance['title']; ?></span>
+                <span><?php echo date("m", $latest_performance["date"])?>/<?php echo date("d", $latest_performance["date"])?></span>
+                <span><?php echo $latest_performance["title"]; ?></span>
             </div>
-            <div class="c-calendar__image-location"><?php echo $latest_performance['location']; ?></div>
+            <div class="c-calendar__image-location"><?php echo $latest_performance["location"]; ?></div>
 		</div>
 	</div>
 	<div class="c-calendar__inner">
